@@ -11,7 +11,14 @@ import MapView from 'react-native-maps';
 class MyWelcomeScreen extends Component{
   constructor() {
     super();
-    this.state = { number: '917 704 3031'};
+    this.state = { number: ''};
+  }
+
+  checker(text){
+    this.setState({number: text})
+    if (this.state.number.length == 6){
+      this.props.navigation.navigate('Confirm', {number: this.state.number})
+    }
   }
 
   render( ){
@@ -19,15 +26,15 @@ class MyWelcomeScreen extends Component{
   return (
     <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
           <View style={{height: 500, alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{fontSize: 72, fontWeight: 'bold', color: 'blue'}}>Hi!</Text>
+            <Text style={{fontSize: 72, fontWeight: 'bold', color: '#2191fb'}}>Hi!</Text>
             <Text style={{fontSize: 20, paddingBottom: 40}}>Enter your phone number to sign in</Text>
             <TextInput
                 navigate={navigate}
-                style={{width: 300, height: 40, fontSize: 20, textAlign: 'center' }}
+                style={{width: 300, height: 40, fontSize: 20, textAlign: 'center', backgroundColor: '#ffffff'}}
                 value={this.state.number}
                 autoFocus={true}
                 keyboardType={'numeric'}
-                onSubmitEditing={ () => {navigate('Confirm', {number: this.state.number})}}
+                onChangeText={(text) => this.checker(text)}
             />
           </View>
         </View>
@@ -40,8 +47,15 @@ class MyWelcomeScreen extends Component{
 class ConfirmationScreen extends Component{
   constructor() {
     super();
-    this.state = { number: '8423',
+    this.state = { number: '',
                     name: 'Jordan'};
+  }
+
+  checker(text){
+    this.setState({number: text})
+    if (this.state.number.length >= 3){
+      this.props.navigation.navigate('TabNav', {number: this.state.number})
+    }
   }
 
   render(){
@@ -57,7 +71,7 @@ class ConfirmationScreen extends Component{
                   value={this.state.number}
                   autoFocus={true}
                   keyboardType={'numeric'}
-                  onSubmitEditing={() => navigate('TabNav')}
+                  onChangeText={(text) => this.checker(text)}
             />
           </View>
         </View>
@@ -77,19 +91,19 @@ const MyHomeScreen = ({ navigation }) => (
     />
     <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}>
       <Text style={{fontWeight: 'bold', color: 'lightgrey', justifyContent: 'center'}}> Set your current electric bill</Text>
-      <View style={{ flexDirection: 'row', marginTop: 20}}>
+      <View style={{ flexDirection: 'row', marginTop: 0}}>
         <TouchableOpacity
           onPress={() => {}}>
-            <Text style={{color: 'blue', fontWeight: 'bold', fontSize: 50}}>-  </Text>
+            <Text style={{color: '#2191fb', fontWeight: 'bold', fontSize: 40}}>-  </Text>
         </TouchableOpacity>
-        <Text style={{fontWeight: 'bold', fontSize: 50, color: 'black'}}>$120/mo</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 40, color: 'black'}}>$120/mo</Text>
         <TouchableOpacity
           onPress={() => {}}>
-            <Text style={{color: 'blue', fontWeight: 'bold', fontSize: 50}}>  +</Text>
+            <Text style={{color: '#2191fb', fontWeight: 'bold', fontSize: 40}}>  +</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity
-        style={{marginTop: 20, backgroundColor: 'blue', paddingLeft: 120, paddingRight: 120, paddingTop:10, paddingBottom: 10, borderRadius: 10 }}
+        style={{marginTop: 10, backgroundColor: '#2191fb', paddingLeft: 120, paddingRight: 120, paddingTop:10, paddingBottom: 10, borderRadius: 10 }}
         onPress={() => navigation.navigate('ResultsTab')}>
           <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>
             Get Bids
@@ -181,7 +195,7 @@ const TabNav = TabNavigator(
       },
     }),
     tabBarOptions: {
-      activeTintColor: 'tomato',
+      activeTintColor: '#2191fb',
       inactiveTintColor: 'gray',
     },
     tabBarComponent: TabBarBottom,
@@ -192,8 +206,8 @@ const TabNav = TabNavigator(
 // STACK NAVIGATOR ----------------------------------------------------
 const StacksOverTabs = StackNavigator({
   Root: { screen: MyWelcomeScreen, navigationOptions: { title: 'Welcome!' } },
-  Confirm: { screen: ConfirmationScreen },
-  TabNav: { screen: TabNav },
+  Confirm: { screen: ConfirmationScreen, navigationOptions: { title: 'Please confirm' } },
+  TabNav: { screen: TabNav, navigationOptions: { title: 'SolarSummon', headerLeft: null } },
 });
 
 export default StacksOverTabs;
